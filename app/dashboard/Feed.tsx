@@ -5,7 +5,6 @@ import { createBrowserSupabase } from "@/lib/supabase/client";
 import AnnouncementCard, { type Announcement } from "@/components/AnnouncementCard";
 import type { Profile } from "@/lib/supabase/server";
 import Link from "next/link";
-
 const turmas = ["1A", "1B", "2A", "2B", "3A", "3B"];
 
 export default function Feed({ profile }: { profile: Profile }) {
@@ -23,7 +22,7 @@ export default function Feed({ profile }: { profile: Profile }) {
       // RLS filtra automaticamente o que este perfil pode ver
       const { data } = await supabase
         .from("announcements")
-        .select("*, profiles(full_name)")
+        .select("*, profiles!announcements_author_id_fkey(full_name)")
         .order("created_at", { ascending: false })
         .limit(100);
       setItems((data as Announcement[]) ?? []);

@@ -16,7 +16,7 @@ export default function MyPosts({ profile }: { profile: Profile }) {
     (async () => {
       const { data: anns } = await supabase
         .from("announcements")
-        .select("*, profiles(full_name)")
+        .select("*, profiles!announcements_author_id_fkey(full_name)")
         .eq("author_id", profile.id)
         .order("created_at", { ascending: false });
       const list = (anns as Announcement[]) ?? [];

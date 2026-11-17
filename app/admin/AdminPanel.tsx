@@ -36,7 +36,7 @@ export default function AdminPanel({ profile }: { profile: Profile }) {
     setLoading(true);
     const [{ data: us }, { data: ps }, { data: ls }, { data: rs }] = await Promise.all([
       supabase.from("profiles").select("*").order("full_name"),
-      supabase.from("announcements").select("*, profiles(full_name)").order("created_at", { ascending: false }).limit(100),
+      supabase.from("announcements").select("*, profiles!announcements_author_id_fkey(full_name)").order("created_at", { ascending: false }).limit(100),
       supabase.from("audit_log").select("*").order("created_at", { ascending: false }).limit(50),
       supabase.from("announcement_reads").select("announcement_id"),
     ]);
